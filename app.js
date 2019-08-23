@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const config = require('./config');
-const Hotels =  require('./modules/hotels/HotelsBoot');
+const Modules =  require('./modules');
 
 
 let app = express();
@@ -22,13 +22,6 @@ app.get('/almundo', function (req, res, next) {
     res.sendFile(path.resolve('public/almundo/index.html'));
 });
 
-
-
-
-const hotels = new Hotels();
-
-app.use('/api',hotels.setup());
-
 // levantar servidor express
 app.set('port', port);
 let server = http.createServer(app);
@@ -42,5 +35,7 @@ function onError(error) {
 function onListening() {
     console.log('Escuchando en el puerto' + config.port);
 }
+
+Modules.registerRoutes(app);
 
 module.exports = app;
